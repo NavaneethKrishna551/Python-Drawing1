@@ -1,0 +1,123 @@
+import turtle as tu
+from shapes import polygon as pg
+
+turt = tu.Turtle()
+
+
+def rect(cords_list, t=turt):
+    i = 0
+
+    for point in cords_list:
+        i += 1
+
+        x = point[0]
+        y = point[1]
+        
+        t.goto(x, y)
+        
+
+        if i == 4:
+            first = cords_list[0]
+            x = first[0]
+            y = first[1]
+            t.goto(x, y)
+
+def coord_convertor(st_pnt_x, st_pnt_y, hei, bre) -> int:
+
+    st_pnt_x = int(st_pnt_x)
+    st_pnt_y = int(st_pnt_y)
+    hei = int(hei)
+    bre = int(bre)
+
+    coords = []
+    x1 , y1= st_pnt_x , st_pnt_y
+    coords.append([x1,y1])
+    x2 = st_pnt_x
+    y2 = st_pnt_y + hei
+    coords.append([x2, y2])
+    x3 = st_pnt_x + bre
+    y3 = st_pnt_y + hei
+    coords.append([x3,y3])
+    x4 = st_pnt_x + bre
+    y4 = st_pnt_y
+    coords.append([x4, y4])
+
+    return coords
+
+
+
+def border(offset, coordsl, t= turt):
+    x1, x2, x3, x4 = 0 , 0, 0, 0
+    y1, y2, y3, y3 = 0, 0, 0, 0
+
+    offset = int(offset)
+    coordsl = list(coordsl)
+
+
+    i = 0
+    offset_coords = []
+    for point in coordsl:
+
+        x = point[0]
+        y = point[1]
+        i += 1
+        match i:
+            case 1:
+                x1 = x - offset
+                y1 = y - offset
+                offset_coords.append([x1,y1])
+
+            case 2:
+                x2 = x - offset
+                y2 = y + offset
+                offset_coords.append([x2,y2])
+
+            case 3:
+                x3 = x + offset
+                y3 = y + offset
+                offset_coords.append([x3,y3])
+
+            case 4:
+                x4 = x + offset
+                y4 = y - offset
+                offset_coords.append([x4,y4])
+    rect(offset_coords, t)
+
+
+
+
+
+
+q = False
+while not q:
+    sh = input(
+
+        "What shape do you want to draw? \n"+
+        " --Rectangle : R"
+    )
+
+    match sh.lower():
+        case "r":
+            coords = []
+
+            stpntx = input("What x coordinate do you want the drawing to start from (number) ->  ")
+            stpnty = input("What y coordinate do you want the drawing to start from (number) ->  ")
+            length = input("What length do you want for your rectangle")
+            height = input("What height do you want for your rectangle")
+            coords = coord_convertor(stpntx, stpnty, height, length)
+
+            stpntx = int(stpntx)
+            stpnty = int(stpnty)
+            length = int(length)
+            height = int(height)
+
+            inp = input("Do you want to add a border? (y/n)")
+            if inp == "n":
+                print(coords)
+                rect(coords)
+            elif inp == "y":
+                off = input("How much offset do you want?")
+                off = int(off)
+
+                border(off, coords, turt)
+                rect(coords)
