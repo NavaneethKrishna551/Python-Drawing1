@@ -1,5 +1,5 @@
 import turtle as tu
-import shapes as shp
+from shapes import circle
 
 turt = tu.Turtle()
 turt.shape("circle")
@@ -26,7 +26,8 @@ def rect(cords_list, t=turt):
             t.goto(x, y)
     drawn_turts.append(t)
 
-def coord_convertor(st_pnt_x, st_pnt_y, hei, bre) -> int:
+
+def coord_convertor(st_pnt_x, st_pnt_y, hei, bre) -> list:
 
     st_pnt_x = int(st_pnt_x)
     st_pnt_y = int(st_pnt_y)
@@ -48,14 +49,16 @@ def coord_convertor(st_pnt_x, st_pnt_y, hei, bre) -> int:
 
     return coords
 
+
 def clear():
     for turtles in drawn_turts:
         turtles.clear()
         turtles.ht()
 
-def border(offset, coordsl, t= turt):
+
+def border(offset, coordsl, t=turt):
     x1, x2, x3, x4 = 0 , 0, 0, 0
-    y1, y2, y3, y3 = 0, 0, 0, 0
+    y1, y2, y3, y4 = 0, 0, 0, 0
 
     offset = int(offset)
     coordsl = list(coordsl)
@@ -88,7 +91,9 @@ def border(offset, coordsl, t= turt):
                 x4 = x + offset
                 y4 = y - offset
                 offset_coords.append([x4,y4])
+    turt.goto(x1, y1)
     rect(offset_coords, t)
+
 
 def line(startpointx, startpointy, endpointx, endpointy, t=turt):
     t.pu()
@@ -96,79 +101,112 @@ def line(startpointx, startpointy, endpointx, endpointy, t=turt):
     t.pd()
     t.goto(endpointx,endpointy)
 
+    drawn_turts.append(t)
 
 
 
 q = False
 while not q:
     sh = input(
-
         "What shape do you want to draw? \n" 
-        " --Line: L"
+        " --Line: L \n"
         " --Rectangle : R \n" 
         " --Circle: C \n"
         " --clear: CL \n"
         " --quit: Q \n"
-        
-        
     )
 
     match sh.lower():
+
         case "l":
-            stpntx = input("What x coordinate do you want the line to start at (number) ->  ")
-            stpnty = input("What y coordinate do you want the line to start at (number) ->  ")
-            endpntx = input("What x coordinate do you want the line to end at (number) ->  ")
-            endpnty = input("What y coordinate do you want the line to end at (number) ->  ")
-            stpntx = int(stpntx)
-            stpnty = int(stpnty)
-            endpntx = int(endpntx)
-            endpnty = int(endpnty)
-            
-            line(stpntx, stpnty, endpntx, endpnty)
+            try:
+                stpntx = input("What x coordinate do you want the line to start at (number) ->  ")
+                stpnty = input("What y coordinate do you want the line to start at (number) ->  ")
+                endpntx = input("What x coordinate do you want the line to end at (number) ->  ")
+                endpnty = input("What y coordinate do you want the line to end at (number) ->  ")
+
+                stpntx = int(stpntx)
+                stpnty = int(stpnty)
+                endpntx = int(endpntx)
+                endpnty = int(endpnty)
+                
+                line(stpntx, stpnty, endpntx, endpnty)
+
+            except ValueError:
+                print("ERROR: Coordinates must be numbers.")
+                continue
 
         case "r":
-            coords = []
-            stpntx = input("What x coordinate do you want the drawing to start from (number) ->  ")
-            stpnty = input("What y coordinate do you want the drawing to start from (number) ->  ")
-            length = input("What length do you want for your rectangle")
-            height = input("What height do you want for your rectangle")
-            coords = coord_convertor(stpntx, stpnty, height, length)
+            try:
+                coords = []
+                stpntx = input("What x coordinate do you want the drawing to start from (number) ->  ")
+                stpnty = input("What y coordinate do you want the drawing to start from (number) ->  ")
+                length = input("What length do you want for your rectangle")
+                height = input("What height do you want for your rectangle")
 
-            stpntx = int(stpntx)
-            stpnty = int(stpnty)
-            length = int(length)
-            height = int(height)
+                coords = coord_convertor(stpntx, stpnty, height, length)
 
-            inp = input("Do you want to add a border? (y/n)")
-            if inp == "n":
-                print(coords)
-                rect(coords)
-            elif inp == "y":
-                off = input("How much offset do you want?")
-                off = int(off)
+                stpntx = int(stpntx)
+                stpnty = int(stpnty)
+                length = int(length)
+                height = int(height)
 
-                border(off, coords, turt)
-                rect(coords)
+                inp = input("Do you want to add a border? (y/n)")
+
+                if inp.lower() == "n":
+                    print(coords)
+                    turt.pu()
+                    turt.goto(stpntx, stpnty)
+                    
+                    rect(coords)
+
+                elif inp.lower() == "y":
+                    off = input("How much offset do you want?")
+                    off = int(off)
+
+                    turt.goto(stpntx, stpnty)
+                    border(off, coords, turt)
+                    rect(coords)
+
+                else:
+                    print("ERROR: Please enter y or n.")
+
+            except ValueError:
+                print("ERROR: Coordinates, length, height, and offset must be numbers.")
+                continue
 
         case "c":
-            stpntx = input("What x coordinate do you want the drawing to start from (number) ->  ")
-            stpnty = input("What y coordinate do you want the drawing to start from (number) ->  ")
+            try:
+                stpntx = input("What x coordinate do you want the drawing to start from (number) ->  ")
+                stpnty = input("What y coordinate do you want the drawing to start from (number) ->  ")
 
-            stpntx = int(stpntx)
-            stpnty = int(stpnty)
+                stpntx = int(stpntx)
+                stpnty = int(stpnty)
 
-            turt.goto(stpntx, stpnty)
-            inp = input("What diameter do you want for your circle")
-            inp = int(inp)
-            shp.circle(turt,inp/2)
-            drawn_turts.append(turt)
+                turt.goto(stpntx, stpnty)
+
+                inp = input("What diameter do you want for your circle")
+                inp = int(inp)
+
+                circle(turt,inp/2)
+                drawn_turts.append(turt)
+
+            except ValueError:
+                print("ERROR: Coordinates and diameter must be numbers.")
+                continue
 
         case "cl":
             inp = input("are you sure you want to clear? (y/n)")
             if inp.lower() == "y":
                 clear()
-            else:
+            elif inp.lower() == "n":
                 continue
+            else:
+                print("ERROR: Please enter y or n.")
+
         case "q":
             q = True
             break
+
+        case _:
+            print("ERROR: Invalid command. Please choose L, R, C, CL, or Q.")
