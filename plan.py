@@ -1,8 +1,11 @@
 import turtle as tu
-from shapes import polygon as pg
+import shapes as shp
 
 turt = tu.Turtle()
+turt.shape("circle")
+turt.shapesize(0.5,0.5,0)
 
+drawn_turts = []
 
 def rect(cords_list, t=turt):
     i = 0
@@ -21,6 +24,7 @@ def rect(cords_list, t=turt):
             x = first[0]
             y = first[1]
             t.goto(x, y)
+    drawn_turts.append(t)
 
 def coord_convertor(st_pnt_x, st_pnt_y, hei, bre) -> int:
 
@@ -44,7 +48,10 @@ def coord_convertor(st_pnt_x, st_pnt_y, hei, bre) -> int:
 
     return coords
 
-
+def clear():
+    for turtles in drawn_turts:
+        turtles.clear()
+        turtles.ht()
 
 def border(offset, coordsl, t= turt):
     x1, x2, x3, x4 = 0 , 0, 0, 0
@@ -92,8 +99,12 @@ q = False
 while not q:
     sh = input(
 
-        "What shape do you want to draw? \n"+
-        " --Rectangle : R"
+        "What shape do you want to draw? \n" 
+        " --Rectangle : R \n" 
+        " --Circle: C \n"
+        " --clear: CL \n"
+        " --quit: Q \n"
+        
     )
 
     match sh.lower():
@@ -121,3 +132,19 @@ while not q:
 
                 border(off, coords, turt)
                 rect(coords)
+
+        case "c":
+            inp = input("What diameter do you want for your circle")
+            inp = int(inp)
+            shp.circle(turt,inp/2)
+            drawn_turts.append(turt)
+
+        case "cl":
+            inp = input("are you sure you want to clear? (y/n)")
+            if inp.lower() == "y":
+                clear()
+            else:
+                continue
+        case "q":
+            q = True
+            break
