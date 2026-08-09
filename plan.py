@@ -90,7 +90,11 @@ def border(offset, coordsl, t= turt):
                 offset_coords.append([x4,y4])
     rect(offset_coords, t)
 
-
+def line(startpointx, startpointy, endpointx, endpointy, t=turt):
+    t.pu()
+    t.goto(startpointx,startpointy)
+    t.pd()
+    t.goto(endpointx,endpointy)
 
 
 
@@ -100,17 +104,30 @@ while not q:
     sh = input(
 
         "What shape do you want to draw? \n" 
+        " --Line: L"
         " --Rectangle : R \n" 
         " --Circle: C \n"
         " --clear: CL \n"
         " --quit: Q \n"
         
+        
     )
 
     match sh.lower():
+        case "l":
+            stpntx = input("What x coordinate do you want the line to start at (number) ->  ")
+            stpnty = input("What y coordinate do you want the line to start at (number) ->  ")
+            endpntx = input("What x coordinate do you want the line to end at (number) ->  ")
+            endpnty = input("What y coordinate do you want the line to end at (number) ->  ")
+            stpntx = int(stpntx)
+            stpnty = int(stpnty)
+            endpntx = int(endpntx)
+            endpnty = int(endpnty)
+            
+            line(stpntx, stpnty, endpntx, endpnty)
+
         case "r":
             coords = []
-
             stpntx = input("What x coordinate do you want the drawing to start from (number) ->  ")
             stpnty = input("What y coordinate do you want the drawing to start from (number) ->  ")
             length = input("What length do you want for your rectangle")
@@ -134,6 +151,13 @@ while not q:
                 rect(coords)
 
         case "c":
+            stpntx = input("What x coordinate do you want the drawing to start from (number) ->  ")
+            stpnty = input("What y coordinate do you want the drawing to start from (number) ->  ")
+
+            stpntx = int(stpntx)
+            stpnty = int(stpnty)
+
+            turt.goto(stpntx, stpnty)
             inp = input("What diameter do you want for your circle")
             inp = int(inp)
             shp.circle(turt,inp/2)
